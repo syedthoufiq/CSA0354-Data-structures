@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+int main()
+{
+    int arr[]={1,5,2,4,3,7,6,0,9,8};
+    int target,pos;
+    scanf("%d",&target);
+    for(int i=0;i<(sizeof(arr)/sizeof(arr[0]));i++)
+    {
+        if(arr[i]==target)
+        {
+            pos=i;
+        }
+    }
+    if(arr[pos]==target)
+    printf(" position: %d",pos+1);
+    else
+    printf("not found");
+}
