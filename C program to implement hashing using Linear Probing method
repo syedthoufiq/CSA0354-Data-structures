@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 10
+
+struct HashTable {
+    int arr[SIZE];
+    int used[SIZE];
+};
+
+void initialize(struct HashTable* ht) {
+    for (int i = 0; i < SIZE; i++) {
+        ht->arr[i] = -1;
+        ht->used[i] = 0;
+    }
+}
+
+int hashFunction(int key) {
+    return key % SIZE;
+}
+
+void insert(struct HashTable* ht, int key) {
+    int index = hashFunction(key);
+    int i = 0;
+
+    while (ht->used[index] && ht->arr[index] != -1) {
+        index = (index + i) % SIZE;
+        i++;
+    }
+
+    ht->arr[index] = key;
+    ht->used[index] = 1;
+}
+
+void display(struct HashTable* ht) {
+    printf("Hash Table: ");
+    for (int i = 0; i < SIZE; i++) {
+        if (ht->used[i]) {
+            printf("%d ", ht->arr[i]);
+        } else {
+            printf("- ");
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    struct HashTable ht;
+    initialize(&ht);
+
+    int keys[] = {23, 45, 12, 78, 56, 89, 34, 67, 90, 15};
+    int numKeys = sizeof(keys) / sizeof(keys[0]);
+
+    for (int i = 0; i < numKeys; i++) {
+        insert(&ht, keys[i]);
+    }
+
+    display(&ht);
+
+    return 0;
+}
