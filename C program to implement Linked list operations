@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* insertAtEnd(struct Node* head, int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        head = newNode;
+    } else {
+        struct Node* current = head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+    return head;
+}
+
+struct Node* deleteNode(struct Node* head, int data) {
+    if (head == NULL) {
+        return NULL;
+    }
+
+    if (head->data == data) {
+        struct Node* temp = head;
+        head = head->next;
+        free(temp);
+        return head;
+    }
+
+    struct Node* current = head;
+    while (current->next != NULL && current->next->data != data) {
+        current = current->next;
+    }
+    if (current->next != NULL) {
+        struct Node* temp = current->next;
+        current->next = current->next->next;
+        free(temp);
+    }
+    return head;
+}
+
+void printLinkedList(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+void freeLinkedList(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
+}
+
+int main() {
+    struct Node* head = NULL;
+
+    head = insertAtEnd(head, 5);
+    head = insertAtEnd(head, 10);
+    head = insertAtEnd(head, 15);
+
+    printf("Linked List after insertions: ");
+    printLinkedList(head);
+
+    head = deleteNode(head, 10);
+
+    printf("Linked List after deletion: ");
+    printLinkedList(head);
+
+    freeLinkedList(head);
+
+    return 0;
+}
